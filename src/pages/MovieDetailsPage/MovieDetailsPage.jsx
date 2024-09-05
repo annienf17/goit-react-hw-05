@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
-import css from "./MovieDetailsPage.module.css"; // Import the CSS file
+import css from "./MovieDetailsPage.module.css";
 
 function MovieDetailsPage() {
   const { movieId } = useParams();
@@ -40,12 +40,13 @@ function MovieDetailsPage() {
   }, [movieId]);
 
   return (
-    <div className={css.movie_container}>
+    <div className={css.container}>
       <button onClick={() => navigate(-1)}>← Go Back</button>
       {movieDetails && (
         <div className={css.movie_details}>
-          <div className={css.movie_image}>
+          <div>
             <img
+              className={css.movie_image}
               src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
               alt={movieDetails.title}
             />

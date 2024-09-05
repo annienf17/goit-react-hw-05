@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import css from "./MovieCast.module.css";
 
 function MovieCast() {
   const { movieId } = useParams();
@@ -34,6 +35,7 @@ function MovieCast() {
         {cast.map((member) => (
           <div key={member.cast_id}>
             <img
+              className={css.imgage_size}
               src={`https://image.tmdb.org/t/p/w200${member.profile_path}`}
               alt={member.name}
               onError={(e) => {

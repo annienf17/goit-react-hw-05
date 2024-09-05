@@ -1,3 +1,10 @@
+.nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 20px;
+}
 .active {
   font-weight: bold;
   color: red;
