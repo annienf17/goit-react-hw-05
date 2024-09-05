@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, Link, useParams, useMatch } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Link,
+  useParams,
+  useMatch,
+  useNavigate,
+} from "react-router-dom";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
@@ -8,6 +15,7 @@ import css from "./MovieDetailsPage.module.css"; // Import the CSS file
 function MovieDetailsPage() {
   const { movieId } = useParams();
   const match = useMatch("/movies/:movieId/*");
+  const navigate = useNavigate();
   const [movieDetails, setMovieDetails] = useState(null);
 
   useEffect(() => {
@@ -33,15 +41,16 @@ function MovieDetailsPage() {
 
   return (
     <div>
+      <button onClick={() => navigate(-1)}>← Go Back</button>
       {movieDetails && (
-        <div className={css.container}>
-          <div>
+        <div className={css.movieDetailsContainer}>
+          <div className={css.movieImage}>
             <img
               src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
               alt={movieDetails.title}
             />
           </div>
-          <div>
+          <div className={css.movieInfo}>
             <h2>
               {movieDetails.title} (
               {new Date(movieDetails.release_date).getFullYear()})
@@ -54,7 +63,7 @@ function MovieDetailsPage() {
           </div>
         </div>
       )}
-      <div>
+      <div className={css.additionalInfo}>
         <p>Additional information</p>
         <ul>
           <li>

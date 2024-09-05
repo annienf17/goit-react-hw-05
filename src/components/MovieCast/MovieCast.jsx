@@ -29,12 +29,24 @@ function MovieCast() {
 
   return (
     <div>
-      <h2>Cast Information</h2>
+      <h2>Cast</h2>
       <ul>
         {cast.map((member) => (
-          <li key={member.cast_id}>
-            {member.name} as {member.character}
-          </li>
+          <div key={member.cast_id}>
+            <img
+              src={`https://image.tmdb.org/t/p/w200${member.profile_path}`}
+              alt={member.name}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src =
+                  "https://via.placeholder.com/200x300?text=No+Image";
+              }}
+            />
+            <li>
+              <p>{member.name}</p>
+              <p>Character: {member.character}</p>
+            </li>
+          </div>
         ))}
       </ul>
     </div>
