@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import css from "./App.module.css";
 
 function App() {
@@ -7,44 +8,36 @@ function App() {
 
   useEffect(() => {
     const fetchConfig = async () => {
-      const configOptions = {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NmY0MTJhMzNhNTUyYjhkMzAzOGFkYTlmOWIzOWE0OCIsIm5iZiI6MTcyNTQ3NjAxNy41OTE1ODIsInN1YiI6IjY1MGFmNjRkYWVkZTU5MWFiMjYwZWZmYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qVQ1HMz4sng209RtHKKDDWadxNRnMDhRN8lsOfcRoc4",
-        },
-      };
-
       try {
-        const response = await fetch(
+        const response = await axios.get(
           "https://api.themoviedb.org/3/configuration",
-          configOptions
+          {
+            headers: {
+              accept: "application/json",
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NmY0MTJhMzNhNTUyYjhkMzAzOGFkYTlmOWIzOWE0OCIsIm5iZiI6MTcyNTQ3NjAxNy41OTE1ODIsInN1YiI6IjY1MGFmNjRkYWVkZTU5MWFiMjYwZWZmYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qVQ1HMz4sng209RtHKKDDWadxNRnMDhRN8lsOfcRoc4",
+            },
+          }
         );
-        const data = await response.json();
-        setConfig(data);
+        setConfig(response.data);
       } catch (err) {
         console.error(err);
       }
     };
 
     const fetchMovies = async () => {
-      const movieOptions = {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NmY0MTJhMzNhNTUyYjhkMzAzOGFkYTlmOWIzOWE0OCIsIm5iZiI6MTcyNTQ3NjAxNy41OTE1ODIsInN1YiI6IjY1MGFmNjRkYWVkZTU5MWFiMjYwZWZmYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qVQ1HMz4sng209RtHKKDDWadxNRnMDhRN8lsOfcRoc4",
-        },
-      };
-
       try {
-        const response = await fetch(
+        const response = await axios.get(
           "https://api.themoviedb.org/3/trending/movie/day?language=en-US",
-          movieOptions
+          {
+            headers: {
+              accept: "application/json",
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4NmY0MTJhMzNhNTUyYjhkMzAzOGFkYTlmOWIzOWE0OCIsIm5iZiI6MTcyNTQ3NjAxNy41OTE1ODIsInN1YiI6IjY1MGFmNjRkYWVkZTU5MWFiMjYwZWZmYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qVQ1HMz4sng209RtHKKDDWadxNRnMDhRN8lsOfcRoc4",
+            },
+          }
         );
-        const data = await response.json();
-        setMovies(data.results);
+        setMovies(response.data.results);
       } catch (err) {
         console.error(err);
       }
