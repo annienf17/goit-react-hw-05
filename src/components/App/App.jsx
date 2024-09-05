@@ -50,7 +50,7 @@ function App() {
   const getImageUrl = (path) => {
     if (!config) return "";
     const baseUrl = config.images.secure_base_url;
-    const size = config.images.poster_sizes[3]; // w500 size
+    const size = config.images.poster_sizes[4]; // w500 size
     return `${baseUrl}${size}${path}`;
   };
 
