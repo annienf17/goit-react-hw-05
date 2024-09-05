@@ -1,4 +1,21 @@
-.container {
+.movie_container {
+  padding: 20px;
+}
+
+.movie_details {
   display: flex;
   gap: 20px;
+  margin-bottom: 20px;
+}
+
+.movie_image {
+  flex: 1;
+}
+
+.movie_info {
+  flex: 2;
+}
+
+.additional_info {
+  margin-top: 20px;
 }

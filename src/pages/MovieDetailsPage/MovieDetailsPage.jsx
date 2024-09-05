@@ -40,17 +40,17 @@ function MovieDetailsPage() {
   }, [movieId]);
 
   return (
-    <div>
+    <div className={css.movie_container}>
       <button onClick={() => navigate(-1)}>← Go Back</button>
       {movieDetails && (
-        <div className={css.movieDetailsContainer}>
-          <div className={css.movieImage}>
+        <div className={css.movie_details}>
+          <div className={css.movie_image}>
             <img
               src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
               alt={movieDetails.title}
             />
           </div>
-          <div className={css.movieInfo}>
+          <div className={css.movie_info}>
             <h2>
               {movieDetails.title} (
               {new Date(movieDetails.release_date).getFullYear()})
@@ -63,7 +63,7 @@ function MovieDetailsPage() {
           </div>
         </div>
       )}
-      <div className={css.additionalInfo}>
+      <div className={css.additional_info}>
         <p>Additional information</p>
         <ul>
           <li>
