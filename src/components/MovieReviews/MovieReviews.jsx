@@ -5,9 +5,13 @@ import axios from "axios";
 function MovieReviews() {
   const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(false); // Stan dla programu ładującego
+  const [error, setError] = useState(null); // Stan dla błędów
 
   useEffect(() => {
     const fetchReviews = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/${movieId}/reviews`,
@@ -20,7 +24,9 @@ function MovieReviews() {
         );
         setReviews(response.data.results);
       } catch (err) {
-        console.error(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -30,18 +36,19 @@ function MovieReviews() {
   return (
     <div>
       <h2>Reviews</h2>
-      {reviews.length > 0 ? (
-        <ul>
-          {reviews.map((review) => (
-            <li key={review.id}>
-              <h3>{review.author}</h3>
-              <p>{review.content}</p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>We do not have any reviews for this movie</p>
+      {loading && <div>Loading...</div>}
+      {error && <div>Error: {error}</div>}
+      {!loading && !error && reviews.length === 0 && (
+        <div>We do not have any reviews for this movie</div>
       )}
+      <ul>
+        {reviews.map((review) => (
+          <li key={review.id}>
+            <h3>{review.author}</h3>
+            <p>{review.content}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
