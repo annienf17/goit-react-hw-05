@@ -5,7 +5,6 @@ function Navigation() {
   return (
     <nav className={css.nav}>
       <NavLink
-        exact
         to="/"
         className={({ isActive }) => (isActive ? css.active : undefined)}
       >
