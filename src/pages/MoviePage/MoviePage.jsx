@@ -9,6 +9,7 @@ function MoviePage() {
   const [loading, setLoading] = useState(false); // Stan dla programu ładującego
   const [error, setError] = useState(null); // Stan dla błędów
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searched, setSearched] = useState(false); // Stan dla śledzenia, czy wyszukiwanie zostało wykonane
 
   useEffect(() => {
     const queryParam = searchParams.get("query");
@@ -40,6 +41,7 @@ function MoviePage() {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    setSearched(true); // Ustawienie stanu na true po kliknięciu przycisku wyszukiwania
     setSearchParams({ query });
   };
 
@@ -60,7 +62,7 @@ function MoviePage() {
       {movies.length > 0 ? (
         <MovieList movies={movies} />
       ) : (
-        !loading && <p>No movies found.</p>
+        searched && !loading && <p>No movies found.</p> // Wyświetlanie komunikatu tylko po kliknięciu przycisku wyszukiwania
       )}
     </div>
   );
