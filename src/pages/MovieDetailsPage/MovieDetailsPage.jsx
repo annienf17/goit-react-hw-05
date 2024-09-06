@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Routes,
   Route,
-  Link,
+  NavLink,
   useParams,
   useMatch,
   useNavigate,
+  useLocation,
+  Outlet,
 } from "react-router-dom";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
@@ -16,10 +18,16 @@ function MovieDetailsPage() {
   const { movieId } = useParams();
   const match = useMatch("/movies/:movieId/*");
   const navigate = useNavigate();
+  const location = useLocation();
+  const backLocationRef = useRef(location.state?.from || "/movies");
   const [movieDetails, setMovieDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/${movieId}`,
@@ -32,7 +40,9 @@ function MovieDetailsPage() {
         );
         setMovieDetails(response.data);
       } catch (err) {
-        console.error(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -41,7 +51,11 @@ function MovieDetailsPage() {
 
   return (
     <div className={css.container}>
-      <button onClick={() => navigate(-1)}>← Go Back</button>
+      <button onClick={() => navigate(backLocationRef.current)}>
+        ← Go Back
+      </button>
+      {loading && <div>Loading...</div>}
+      {error && <div>Error: {error}</div>}
       {movieDetails && (
         <div className={css.movie_details}>
           <div>
@@ -68,14 +82,25 @@ function MovieDetailsPage() {
         <p>Additional information</p>
         <ul>
           <li>
-            <Link to={`${match.pathnameBase}/cast`}>Cast</Link>
+            <NavLink
+              to={`${match.pathnameBase}/cast`}
+              state={{ from: location }}
+            >
+              Cast
+            </NavLink>
           </li>
           <li>
-            <Link to={`${match.pathnameBase}/reviews`}>Reviews</Link>
+            <NavLink
+              to={`${match.pathnameBase}/reviews`}
+              state={{ from: location }}
+            >
+              Reviews
+            </NavLink>
           </li>
         </ul>
       </div>
       <hr />
+      <Outlet />
       <Routes>
         <Route path="cast" element={<MovieCast />} />
         <Route path="reviews" element={<MovieReviews />} />
