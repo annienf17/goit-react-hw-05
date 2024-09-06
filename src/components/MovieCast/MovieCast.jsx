@@ -6,9 +6,13 @@ import css from "./MovieCast.module.css";
 function MovieCast() {
   const { movieId } = useParams();
   const [cast, setCast] = useState([]);
+  const [loading, setLoading] = useState(false); // Stan dla programu ładującego
+  const [error, setError] = useState(null); // Stan dla błędów
 
   useEffect(() => {
     const fetchCast = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/${movieId}/credits`,
@@ -21,7 +25,9 @@ function MovieCast() {
         );
         setCast(response.data.cast);
       } catch (err) {
-        console.error(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -31,6 +37,11 @@ function MovieCast() {
   return (
     <div>
       <h2>Cast</h2>
+      {loading && <div>Loading...</div>}
+      {error && <div>Error: {error}</div>}
+      {!loading && !error && cast.length === 0 && (
+        <div>No cast information available.</div>
+      )}
       <ul>
         {cast.map((member) => (
           <div key={member.cast_id}>
