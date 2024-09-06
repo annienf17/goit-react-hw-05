@@ -5,8 +5,8 @@ import axios from "axios";
 function MovieReviews() {
   const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(false); // Stan dla programu ładującego
-  const [error, setError] = useState(null); // Stan dla błędów
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchReviews = async () => {

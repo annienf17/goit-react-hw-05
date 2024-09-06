@@ -1,10 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
-// import HomePage from "../../pages/HomePage/HomePage";
-// import MoviePage from "../../pages/MoviePage/MoviePage";
-// import MovieDetailsPage from "../../pages/MovieDetailsPage/MovieDetailsPage";
-// import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
 
 //dynamic component loading
 const HomePage = lazy(() => import("../../pages/HomePage/HomePage"));

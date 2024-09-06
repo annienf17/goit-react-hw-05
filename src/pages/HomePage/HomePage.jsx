@@ -4,8 +4,8 @@ import MovieList from "../../components/MovieList/MovieList";
 
 function HomePage() {
   const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true); // Stan dla programu ładującego
-  const [error, setError] = useState(null); // Stan dla błędów
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchMovies = async () => {

@@ -6,8 +6,8 @@ import css from "./MovieCast.module.css";
 function MovieCast() {
   const { movieId } = useParams();
   const [cast, setCast] = useState([]);
-  const [loading, setLoading] = useState(false); // Stan dla programu ładującego
-  const [error, setError] = useState(null); // Stan dla błędów
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCast = async () => {
