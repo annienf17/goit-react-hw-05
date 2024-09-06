@@ -4,6 +4,8 @@ import MovieList from "../../components/MovieList/MovieList";
 
 function HomePage() {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true); // Stan dla programu ładującego
+  const [error, setError] = useState(null); // Stan dla błędów
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -19,17 +21,31 @@ function HomePage() {
         );
         setMovies(response.data.results);
       } catch (err) {
-        console.error(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchMovies();
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div>
       <h1>Trending today</h1>
-      <MovieList movies={movies} />
+      {movies.length > 0 ? (
+        <MovieList movies={movies} />
+      ) : (
+        <p>No trending movies found.</p>
+      )}
     </div>
   );
 }
