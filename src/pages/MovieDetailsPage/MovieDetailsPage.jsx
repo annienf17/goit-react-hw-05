@@ -13,6 +13,7 @@ import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
 import css from "./MovieDetailsPage.module.css";
+import useLoadingError from "../../hooks/useLoadingError";
 
 function MovieDetailsPage() {
   const { movieId } = useParams();
@@ -21,13 +22,19 @@ function MovieDetailsPage() {
   const location = useLocation();
   const backLocationRef = useRef(location.state?.from || "/movies");
   const [movieDetails, setMovieDetails] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    loading,
+    error,
+    startLoading,
+    stopLoading,
+    setErrorState,
+    clearError,
+  } = useLoadingError();
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
-      setLoading(true);
-      setError(null);
+      startLoading();
+      clearError();
       try {
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/${movieId}`,
@@ -41,20 +48,18 @@ function MovieDetailsPage() {
         setMovieDetails(response.data);
       } catch (err) {
         if (!err.response) {
-          // Network error
-          setError("Network error: Please check your internet connection.");
+          setErrorState(
+            "Network error: Please check your internet connection."
+          );
         } else if (err.response.status >= 500) {
-          // Server error
-          setError("Server error: Please try again later.");
+          setErrorState("Server error: Please try again later.");
         } else if (err.response.status === 404) {
-          // Not found
-          setError("Error: Movie details not found.");
+          setErrorState("Error: Movie details not found.");
         } else {
-          // Other errors
-          setError(`Error: ${err.message}`);
+          setErrorState(`Error: ${err.message}`);
         }
       } finally {
-        setLoading(false);
+        stopLoading();
       }
     };
 

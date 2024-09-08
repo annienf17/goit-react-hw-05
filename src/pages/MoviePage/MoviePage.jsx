@@ -2,14 +2,21 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import MovieList from "../../components/MovieList/MovieList";
+import useLoadingError from "../../hooks/useLoadingError";
 
 function MoviePage() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [searched, setSearched] = useState(false);
+  const {
+    loading,
+    error,
+    startLoading,
+    stopLoading,
+    setErrorState,
+    clearError,
+  } = useLoadingError();
 
   useEffect(() => {
     const queryParam = searchParams.get("query");
@@ -19,8 +26,8 @@ function MoviePage() {
   }, [searchParams]);
 
   const fetchMovies = async (searchQuery) => {
-    setLoading(true);
-    setError(null);
+    startLoading();
+    clearError();
     try {
       const response = await axios.get(
         `https://api.themoviedb.org/3/search/movie?query=${searchQuery}&language=en-US`,
@@ -34,20 +41,16 @@ function MoviePage() {
       setMovies(response.data.results);
     } catch (err) {
       if (!err.response) {
-        // Network error
-        setError("Network error: Please check your internet connection.");
+        setErrorState("Network error: Please check your internet connection.");
       } else if (err.response.status >= 500) {
-        // Server error
-        setError("Server error: Please try again later.");
+        setErrorState("Server error: Please try again later.");
       } else if (err.response.status === 404) {
-        // Not found
-        setError("Error: Movies not found.");
+        setErrorState("Error: Movies not found.");
       } else {
-        // Other errors
-        setError(`Error: ${err.message}`);
+        setErrorState(`Error: ${err.message}`);
       }
     } finally {
-      setLoading(false);
+      stopLoading();
     }
   };
 

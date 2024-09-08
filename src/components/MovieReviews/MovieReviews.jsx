@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import useLoadingError from "../../hooks/useLoadingError";
 
 function MovieReviews() {
   const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    loading,
+    error,
+    startLoading,
+    stopLoading,
+    setErrorState,
+    clearError,
+  } = useLoadingError();
 
   useEffect(() => {
     const fetchReviews = async () => {
-      setLoading(true);
-      setError(null);
+      startLoading();
+      clearError();
       try {
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/${movieId}/reviews`,
@@ -24,9 +31,9 @@ function MovieReviews() {
         );
         setReviews(response.data.results);
       } catch (err) {
-        setError(err.message);
+        setErrorState(err.message);
       } finally {
-        setLoading(false);
+        stopLoading();
       }
     };
 
