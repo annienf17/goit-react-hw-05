@@ -44,16 +44,16 @@ function MovieCast() {
       )}
       <ul>
         {cast.map((member) => (
-          <div key={member.cast_id}>
+          <div key={member.id}>
             <img
               className={css.imgage_size}
-              src={`https://image.tmdb.org/t/p/w200${member.profile_path}`}
+              src={
+                member.profile_path
+                  ? `https://image.tmdb.org/t/p/w200${member.profile_path}`
+                  : "https://via.placeholder.com/200x300?text=No+Image"
+              }
               alt={member.name}
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src =
-                  "https://via.placeholder.com/200x300?text=No+Image";
-              }}
+              loading="lazy"
             />
             <li>
               <p>{member.name}</p>
