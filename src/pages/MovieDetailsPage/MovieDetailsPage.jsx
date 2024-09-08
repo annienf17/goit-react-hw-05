@@ -40,19 +40,7 @@ function MovieDetailsPage() {
         );
         setMovieDetails(response.data);
       } catch (err) {
-        if (!err.response) {
-          // Network error
-          setError("Network error: Please check your internet connection.");
-        } else if (err.response.status >= 500) {
-          // Server error
-          setError("Server error: Please try again later.");
-        } else if (err.response.status === 404) {
-          // Not found
-          setError("Error: Movie not found.");
-        } else {
-          // Other errors
-          setError(`Error: ${err.message}`);
-        }
+        setError(err.message);
       } finally {
         setLoading(false);
       }
